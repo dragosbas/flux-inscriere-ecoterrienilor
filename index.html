@@ -125,10 +125,15 @@
   }
   .cap-col.cap-proces { color: var(--cerneala-slaba); border-bottom-color: var(--linie); }
 
-  .ent, .proces { padding: 1.1rem 0 1.6rem; border-bottom: 1px dashed var(--linie); }
-  .rand-final .ent, .rand-final .proces { border-bottom: none; }
+  /* Celulele unui rând se întind egal și țin un separator comun, perfect aliniat. */
+  .ent, .proces { padding: 1.1rem 0 1.6rem; border-bottom: 1px solid var(--linie); }
+  .rand-final.ent, .rand-final.proces, .proces.rand-final { border-bottom: none; }
+  .ent.rand-final { border-bottom: none; }
 
-  .ent { font-size: 0.8rem; line-height: 1.45; align-self: start; padding-top: 1.3rem; }
+  .ent {
+    font-size: 0.8rem; line-height: 1.45;
+    display: flex; align-items: center;   /* pastila stă la mijlocul rândului, în dreptul pasului */
+  }
   .ent .schimb {
     display: inline-block; background: var(--verde-deschis); color: var(--verde-inchis);
     border-radius: 6px; padding: 0.3rem 0.55rem;
@@ -136,7 +141,10 @@
   .ent .schimb.atentie { background: var(--chihlimbar-fond); color: oklch(0.42 0.09 80); }
   .ent .nimic { color: oklch(0.78 0.015 145); }
 
-  .proces { position: relative; }
+  .proces {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: center;
+  }
   .pas {
     position: relative; background: var(--hartie);
     border: 1.5px solid oklch(0.55 0.06 144); border-radius: 8px;
