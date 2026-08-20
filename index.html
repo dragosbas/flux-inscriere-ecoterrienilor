@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxul de înscriere — Școala Ecoterrienilor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&subset=latin-ext&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: oklch(0.378 0.154 144.5);        /* #036600 */
+    --verde-inchis: oklch(0.30 0.12 144.5);
+    --verde-deschis: oklch(0.906 0.024 143.4); /* #dae7d6 */
+    --verde-mediu: oklch(0.788 0.084 144.8);   /* #a2cc99 */
+    --hartie: oklch(0.975 0.008 140);
+    --cerneala: oklch(0.32 0.015 145);
+    --cerneala-slaba: oklch(0.48 0.02 145);
+    --chihlimbar: oklch(0.62 0.11 80);
+    --chihlimbar-fond: oklch(0.95 0.04 90);
+    --rosu: oklch(0.52 0.14 30);
+    --rosu-fond: oklch(0.94 0.03 30);
+    --linie: oklch(0.86 0.03 143);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Work Sans", sans-serif;
+    background: var(--hartie);
+    color: var(--cerneala);
+    line-height: 1.55;
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  }
+  .pagina { max-width: 1180px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem) 6rem; }
+
+  /* ---------- antet ---------- */
+  header {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 0;
+    border-bottom: 3px solid var(--verde);
+    margin-bottom: 0;
+    position: relative;
+  }
+  .supratitlu {
+    display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--verde); font-weight: 600; margin-bottom: 1rem;
+  }
+  .supratitlu .frunza { font-size: 1rem; letter-spacing: 0; }
+  .insigna {
+    background: var(--verde); color: white; padding: 0.15rem 0.6rem;
+    border-radius: 99px; font-size: 0.72rem; letter-spacing: 0.08em;
+  }
+  h1 {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: clamp(2.1rem, 5.5vw, 3.6rem);
+    line-height: 1.05; letter-spacing: -0.015em; max-width: 18ch;
+  }
+  h1 em { font-style: italic; color: var(--verde); }
+  .antet-jos {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 2rem; flex-wrap: wrap; padding: 1.5rem 0 1.75rem;
+  }
+  .antet-jos p { max-width: 52ch; color: var(--cerneala-slaba); }
+  .meta { text-align: right; font-size: 0.82rem; color: var(--cerneala-slaba); white-space: nowrap; }
+  .meta strong { color: var(--cerneala); }
+
+  /* ---------- navigare ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklch, var(--hartie) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--linie);
+    display: flex; gap: 0; overflow-x: auto;
+    margin: 0 calc(-1 * clamp(1rem, 4vw, 3rem)); padding: 0 clamp(1rem, 4vw, 3rem);
+  }
+  nav button {
+    font: inherit; font-weight: 600; font-size: 0.9rem;
+    background: none; border: none; cursor: pointer;
+    padding: 0.9rem 1.1rem; color: var(--cerneala-slaba);
+    border-bottom: 3px solid transparent; margin-bottom: -1px;
+    white-space: nowrap; transition: color 0.15s;
+  }
+  nav button:hover { color: var(--verde); }
+  nav button[aria-selected="true"] { color: var(--verde); border-bottom-color: var(--verde); }
+  nav button .nr {
+    font-family: "Fraunces", serif; font-style: italic; font-weight: 400;
+    margin-right: 0.4rem; opacity: 0.6;
+  }
+
+  /* ---------- secțiuni ---------- */
+  section[hidden] { display: none; }
+  section { padding-top: 2.5rem; }
+  h2 {
+    font-family: "Fraunces", serif; font-weight: 600;
+    font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+  .lede { color: var(--cerneala-slaba); max-width: 62ch; margin-bottom: 2rem; }
+  .lede strong { color: var(--cerneala); }
+
+  /* ---------- diagrama ---------- */
+  .diagrama-cadru {
+    background: white; border: 1px solid var(--linie); border-radius: 10px;
+    padding: clamp(0.75rem, 2vw, 2rem); overflow-x: auto;
+  }
+  .diagrama-cadru .mermaid { display: flex; justify-content: center; min-width: 640px; }
+  .diagrama-cadru svg { max-width: 100%; height: auto; }
+
+  /* ---------- legenda ---------- */
+  .legenda {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
+    margin: 1.25rem 0 0; font-size: 0.82rem; color: var(--cerneala-slaba);
+  }
+  .legenda span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .pastila { width: 0.95rem; height: 0.95rem; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
+  .p-normal   { background: white; border-color: oklch(0.55 0.06 144); }
+  .p-decizie  { background: var(--verde-deschis); border-color: var(--verde); border-radius: 50% 8px; transform: rotate(45deg); width: 0.8rem; height: 0.8rem; border-radius: 2px; }
+  .p-preluare { background: var(--chihlimbar-fond); border-color: var(--chihlimbar); }
+  .p-blocat   { background: var(--rosu-fond); border-color: var(--rosu); }
+  .p-final    { background: var(--verde); border-color: var(--verde-inchis); }
+
+  /* ---------- reguli / tabel ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 0; font-size: 0.92rem; }
+  caption { text-align: left; font-weight: 600; padding-bottom: 0.75rem; font-size: 1rem; }
+  th {
+    font-family: "Fraunces", serif; font-weight: 600; text-align: left;
+    padding: 0.6rem 1rem 0.6rem 0; border-bottom: 2px solid var(--verde);
+    font-size: 0.95rem;
+  }
+  td { padding: 0.85rem 1rem 0.85rem 0; border-bottom: 1px solid var(--linie); vertical-align: top; }
+  td:first-child { font-weight: 500; width: 42%; }
+  .semn { font-size: 1rem; margin-right: 0.35rem; }
+
+  /* ---------- decizii ---------- */
+  .decizii { counter-reset: dec; margin-top: 2rem; }
+  .decizie {
+    display: grid; grid-template-columns: auto 1fr; gap: 1.25rem;
+    padding: 1.5rem 0; border-top: 1px solid var(--linie);
+  }
+  .decizie::before {
+    counter-increment: dec; content: counter(dec, decimal-leading-zero);
+    font-family: "Fraunces", serif; font-style: italic; font-size: 2rem;
+    color: var(--verde-mediu); line-height: 1;
+  }
+  .decizie h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .decizie p { color: var(--cerneala-slaba); max-width: 66ch; }
+  .decizie p strong { color: var(--cerneala); }
+
+  .principii {
+    background: var(--verde-deschis); border-radius: 10px;
+    padding: clamp(1.25rem, 3vw, 2rem); margin-top: 2.5rem;
+  }
+  .principii h3 {
+    font-family: "Fraunces", serif; font-weight: 600; font-size: 1.2rem;
+    margin-bottom: 0.75rem; color: var(--verde-inchis);
+  }
+  .principii ul { padding-left: 1.2rem; display: grid; gap: 0.5rem; }
+  .principii li::marker { color: var(--verde); }
+
+  footer {
+    margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--linie);
+    font-size: 0.8rem; color: var(--cerneala-slaba);
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  code { font-size: 0.85em; background: var(--verde-deschis); padding: 0.1em 0.35em; border-radius: 4px; }
+
+  @media print {
+    nav { display: none; }
+    section[hidden] { display: block !important; }
+    section { break-before: page; padding-top: 1rem; }
+    section:first-of-type { break-before: auto; }
+    .diagrama-cadru { border: none; padding: 0; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+<header>
+  <div class="supratitlu">
+    <span class="frunza">🌿</span> Școala Ecoterrienilor
+    <span class="insigna">Propunere validată · 20 aug 2026</span>
+  </div>
+  <h1>Fluxul de înscriere, <em>pe ediții</em></h1>
+  <div class="antet-jos">
+    <p>Cum intră în platformă o școală, profesorul ei responsabil și elevii — inclusiv
+    reînscrierea la fiecare ediție și cazul în care un alt profesor preia o școală
+    care a mai participat.</p>
+    <div class="meta">
+      Ediția de referință: <strong>E</strong> (ex. 2025–2026)<br>
+      Sursa: <code>docs/FLUX_INSCRIERE_PROPUS_2026-08-20.md</code>
+    </div>
+  </div>
+</header>
+
+<nav role="tablist" aria-label="Secțiuni">
+  <button role="tab" aria-selected="true"  data-tinta="s-scoala"><span class="nr">I.</span>Școală &amp; profesor</button>
+  <button role="tab" aria-selected="false" data-tinta="s-elevi"><span class="nr">II.</span>Elevi</button>
+  <button role="tab" aria-selected="false" data-tinta="s-reguli"><span class="nr">III.</span>Reguli &amp; decizii</button>
+</nav>
+
+<!-- ============ I. ȘCOALĂ + PROFESOR ============ -->
+<section id="s-scoala" role="tabpanel">
+  <h2>Înscrierea școlii și a profesorului</h2>
+  <p class="lede">Școala nu se înscrie singură — un <strong>profesor responsabil</strong> depune o
+  cerere, iar echipa proiectului o aprobă. La fiecare ediție nouă, profesorii din edițiile
+  trecute doar <strong>confirmă</strong> participarea; cererile de <strong>preluare</strong>
+  (alt profesor pentru aceeași școală) ajung tot la echipă, marcate distinct.</p>
+
+  <div class="diagrama-cadru">
+  <pre class="mermaid">
+flowchart TD
+    subgraph PROF["&nbsp;PROFESORUL&nbsp;"]
+        A1{"Are cont din<br/>ediția anterioară?"}
+        A1 -- "Nu — profesor nou" --> A2["Își creează cont<br/>(email + parolă)"]
+        A2 --> A3["Formular de înscriere:<br/>alege școala din catalogul SIIIR,<br/>date despre școală, consimțăminte"]
+        A1 -- "Da" --> B1{"La autentificare:<br/>«Continuați în ediția E?»"}
+        B1 -- "NU" --> B2["Școala se dezleagă de profesor —<br/>devine liberă pentru preluare"]
+        B2 --> B3(["Stop — se poate răzgândi<br/>cât timp școala e liberă"])
+        B1 -- "DA" --> B4["Cerere nouă, pre-completată<br/>cu datele de anul trecut<br/>(istoricul edițiilor se păstrează)"]
+        B4 --> P0
+        A3 --> C1{"Școala aleasă are deja<br/>un profesor responsabil?"}
+        C1 -- "Nu" --> P0["Cerere ÎN AȘTEPTARE<br/>în coada echipei"]
+        C1 -- "Da — deja aprobată<br/>în ediția E" --> C2["🚫 Blocat: școala e deja înscrisă<br/>anul acesta cu profesorul A —<br/>contactați echipa proiectului"]
+        C1 -- "Da — din ediții anterioare<br/>sau cerere în așteptare" --> C3["Vede numele profesorului A<br/>și e invitat să-l contacteze direct"]
+        C3 --> C4["Poate depune totuși cererea →<br/>marcată PRELUARE"]
+        C4 --> P0
+    end
+    subgraph ADMIN["&nbsp;ECHIPA PROIECTULUI (admin)&nbsp;"]
+        P0 --> D1{"Tip cerere"}
+        D1 -- "normală" --> D2{"Decizie"}
+        D1 -- "PRELUARE" --> D3["Vede: profesorul actual A,<br/>dacă A a fost activ în ediția E,<br/>zile de la depunere<br/>(termen orientativ: 3 zile, configurabil)"]
+        D3 --> D4{"Decizie de preluare"}
+        D4 -- "aprobă" --> D5["Pasul 1: dezalocă profesorul A<br/>Pasul 2: aprobă cererea normal"]
+        D4 -- "respinge" --> D6["Respinge, cu motiv"]
+        D2 -- "respinge" --> D6
+        D2 -- "aprobă" --> D7
+        D5 --> D7["Școala legată de ediția E ·<br/>cod SE generat dacă e școală nouă ·<br/>profesor activat + cod de profesor ·<br/>alte cereri în așteptare pe aceeași școală<br/>→ respinse automat, cu motiv"]
+        D6 --> D8["Profesorul vede motivul,<br/>poate corecta și retrimite"]
+        D8 --> P0
+    end
+    D7 --> E0(["Școala e activă în ediția E —<br/>elevii se pot înscrie cu codul profesorului"])
+
+    classDef implicit fill:#ffffff,stroke:#7a9b6e,color:#2e3a2b;
+    classDef decizie fill:#dae7d6,stroke:#036600,color:#1e3d1a;
+    classDef preluare fill:#f7eed4,stroke:#a07d1c,color:#4a3a0d;
+    classDef blocat fill:#f8e5e0,stroke:#b3402f,color:#5c1f13;
+    classDef final fill:#036600,stroke:#023d00,color:#ffffff;
+    classDef stop fill:#eef2ea,stroke:#9aa895,color:#4a5245;
+    class A2,A3,B2,B4,P0,D5,D6,D7,D8 implicit;
+    class A1,B1,C1,D1,D2,D4 decizie;
+    class C3,C4,D3 preluare;
+    class C2 blocat;
+    class E0 final;
+    class B3 stop;
+    style PROF fill:#fbfdf8,stroke:#c9dcc0,color:#036600;
+    style ADMIN fill:#f4f8f0,stroke:#a2cc99,color:#036600;
+  </pre>
+  </div>
+
+  <div class="legenda">
+    <span><i class="pastila p-normal"></i> pas / acțiune</span>
+    <span><i class="pastila p-decizie"></i> decizie</span>
+    <span><i class="pastila p-preluare"></i> caz de preluare</span>
+    <span><i class="pastila p-blocat"></i> blocaj</span>
+    <span><i class="pastila p-final"></i> rezultat final</span>
+  </div>
+</section>
+
+<!-- ============ II. ELEVI ============ -->
+<section id="s-elevi" role="tabpanel">
+  <h2>Înscrierea și reînscrierea elevilor</h2>
+  <p class="lede">Elevul nou primește <strong>codul profesorului</strong> și își face cont.
+  Elevul care a mai participat se <strong>reînscrie în doi pași</strong>: își alege clasa nouă
+  și reînnoiește acordul parental — restul (cont, școală) se preia automat. Ambele cerințe vin
+  din realitate: clasa se schimbă în fiecare an, iar acordul părinților trebuie reînnoit anual.</p>
+
+  <div class="diagrama-cadru">
+  <pre class="mermaid">
+flowchart TD
+    S0(["Elevul"]) --> S1{"A avut cont<br/>în ediția trecută?"}
+    S1 -- "Nu" --> S2["Primește codul de profesor<br/>de la profesorul responsabil"]
+    S2 --> S3["Își creează cont: clasă, nickname,<br/>email, parolă, codul profesorului"]
+    S3 --> S4{"Cod valid ȘI școala aprobată<br/>în ediția curentă?"}
+    S4 -- "Nu" --> S5["Mesaj clar: «școala nu e încă<br/>înscrisă în ediția curentă —<br/>întreabă profesorul tău»"]
+    S5 --> S2
+    S4 -- "Da" --> S6["Alocat la școală,<br/>în ediția E"]
+    S1 -- "Da" --> R1["Se autentifică<br/>cu contul vechi"]
+    R1 --> R2{"«Continui în ediția E?»"}
+    R2 -- "Da" --> R3{"Școala lui e aprobată<br/>în ediția E?"}
+    R3 -- "Da" --> R4["Își alege clasa nouă →<br/>cont pe ediția E, aceleași<br/>credențiale, aceeași școală"]
+    R3 -- "Nu / școala a fost preluată<br/>de alt profesor" --> S2
+    R2 -- "Nu" --> R5(["Stop"])
+    R4 --> S7
+    S6 --> S7["Acord parental: consimțăminte<br/>+ semnătură — reînnoit obligatoriu<br/>la fiecare ediție"]
+    S7 --> S8(["Cont activ în ediția E"])
+
+    classDef implicit fill:#ffffff,stroke:#7a9b6e,color:#2e3a2b;
+    classDef decizie fill:#dae7d6,stroke:#036600,color:#1e3d1a;
+    classDef atentie fill:#f7eed4,stroke:#a07d1c,color:#4a3a0d;
+    classDef final fill:#036600,stroke:#023d00,color:#ffffff;
+    classDef stop fill:#eef2ea,stroke:#9aa895,color:#4a5245;
+    class S2,S3,S6,R1,R4,S7 implicit;
+    class S1,S4,R2,R3 decizie;
+    class S5 atentie;
+    class S8 final;
+    class S0,R5 stop;
+  </pre>
+  </div>
+
+  <div class="legenda">
+    <span><i class="pastila p-normal"></i> pas / acțiune</span>
+    <span><i class="pastila p-decizie"></i> decizie</span>
+    <span><i class="pastila p-preluare"></i> atenționare</span>
+    <span><i class="pastila p-final"></i> rezultat final</span>
+  </div>
+</section>
+
+<!-- ============ III. REGULI & DECIZII ============ -->
+<section id="s-reguli" role="tabpanel">
+  <h2>Regulile de conflict și deciziile închise</h2>
+  <p class="lede">Ce se întâmplă când profesorul B alege o școală care are deja un profesor
+  responsabil — regula depinde de <strong>starea școlii în ediția curentă</strong>, nu de
+  simpla existență a unui profesor în istoric.</p>
+
+  <table>
+    <caption>Situația școlii alese de profesorul B</caption>
+    <thead>
+      <tr><th>Starea școlii</th><th>Ce se întâmplă pentru B</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Liberă — fără profesor responsabil</td>
+        <td><span class="semn">✅</span>Cerere normală, intră în coada echipei.</td>
+      </tr>
+      <tr>
+        <td>Are profesorul A, <strong>aprobată în ediția curentă</strong></td>
+        <td><span class="semn">🚫</span>Blocat — școala e deja înscrisă anul acesta.
+            B e îndrumat către echipa proiectului.</td>
+      </tr>
+      <tr>
+        <td>Profesorul A are cerere <strong>în așteptare</strong> în ediția curentă</td>
+        <td><span class="semn">⚠️</span>B e avertizat (vede numele lui A), dar poate depune.
+            Ambele cereri ajung la echipă, care alege.</td>
+      </tr>
+      <tr>
+        <td>Profesorul A doar <strong>din ediții anterioare</strong> — nu a confirmat încă</td>
+        <td><span class="semn">🔁</span>B vede numele lui A și e invitat să-l contacteze direct
+            (sunt colegi). Poate depune cererea, marcată <strong>PRELUARE</strong>;
+            echipa arbitrează, cu termenul orientativ afișat.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="decizii">
+    <div class="decizie">
+      <div>
+        <h3>Fără email ca mecanism critic</h3>
+        <p>Rata de livrare a emailurilor către profesori e sub 10%, deci nicio decizie nu
+        depinde de un email citit. Conflictul se vede și se rezolvă <strong>în aplicație</strong>,
+        cu echipa proiectului ca arbitru.</p>
+      </div>
+    </div>
+    <div class="decizie">
+      <div>
+        <h3>Doar numele profesorului actual, nu emailul</h3>
+        <p>În avertizările de conflict, B vede <strong>doar numele</strong> lui A — profesorii
+        din aceeași școală se cunosc între ei, numele e suficient pentru contact direct.</p>
+      </div>
+    </div>
+    <div class="decizie">
+      <div>
+        <h3>Termen orientativ de preluare: 3 zile</h3>
+        <p>Echipa vede de câte zile așteaptă o cerere de preluare și dacă profesorul actual a
+        fost activ în ediția curentă. Pragul de <strong>3 zile</strong> e doar un reper vizual,
+        ușor de modificat — nu declanșează nimic automat.</p>
+      </div>
+    </div>
+    <div class="decizie">
+      <div>
+        <h3>Acordul parental se reînnoiește la fiecare ediție</h3>
+        <p>Împreună cu schimbarea clasei, e motivul pentru care elevii nu pot fi reînscriși
+        complet automat. Reînscrierea rămâne însă la <strong>doi pași</strong>: clasa nouă +
+        acordul reînnoit.</p>
+      </div>
+    </div>
+    <div class="decizie">
+      <div>
+        <h3>Istoricul participărilor se păstrează</h3>
+        <p>Fiecare ediție are propria cerere aprobată — reconfirmarea nu mai rescrie cererea
+        de anul trecut. Așa știm oricând <strong>cine a condus fiecare școală, în fiecare
+        ediție</strong> — informația pe care se sprijină întreg mecanismul de preluare.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="principii">
+    <h3>Principiile fluxului, pe scurt</h3>
+    <ul>
+      <li>Orice cerere trece printr-un om — echipa proiectului aprobă, respinge sau arbitrează.</li>
+      <li>O școală are un singur profesor responsabil per ediție; aprobarea unei cereri
+          respinge automat celelalte cereri pe aceeași școală, cu motiv.</li>
+      <li>Profesorii revin cu o confirmare pre-completată, nu cu formularul de la zero.</li>
+      <li>Elevii intră doar în școli aprobate pentru ediția curentă — codul de profesor nu
+          mai funcționează „în gol".</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span>Școala Ecoterrienilor · Ecotic — propunere de flux, validată 20 august 2026</span>
+  <span>Document de lucru · sursa de adevăr: repo-ul proiectului</span>
+</footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    flowchart: { curve: 'basis', htmlLabels: true, padding: 10 },
+    themeVariables: {
+      fontFamily: '"Work Sans", sans-serif',
+      fontSize: '14.5px',
+      primaryColor: '#ffffff',
+      primaryBorderColor: '#7a9b6e',
+      primaryTextColor: '#2e3a2b',
+      lineColor: '#6b7d63',
+      edgeLabelBackground: '#f3f7ef',
+      clusterBkg: '#fbfdf8',
+      clusterBorder: '#c9dcc0'
+    }
+  });
+
+  const taburi = document.querySelectorAll('nav [role="tab"]');
+  const panouri = document.querySelectorAll('[role="tabpanel"]');
+  const activeaza = (tab) => {
+    taburi.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+    panouri.forEach(p => p.hidden = (p.id !== tab.dataset.tinta));
+    history.replaceState(null, '', '#' + tab.dataset.tinta);
+  };
+  taburi.forEach(tab => tab.addEventListener('click', () => activeaza(tab)));
+
+  // Mermaid nu poate măsura text în elemente ascunse — randăm totul cu
+  // secțiunile vizibile, abia apoi activăm tab-ul cerut.
+  mermaid.run().then(() => {
+    const initial = location.hash.slice(1);
+    const tab = document.querySelector(`nav [data-tinta="${CSS.escape(initial)}"]`) || taburi[0];
+    activeaza(tab);
+  });
+</script>
+</body>
+</html>
