@@ -37,8 +37,6 @@
   header {
     padding: clamp(2.5rem, 6vw, 4.5rem) 0 0;
     border-bottom: 3px solid var(--verde);
-    margin-bottom: 0;
-    position: relative;
   }
   .supratitlu {
     display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
@@ -95,16 +93,91 @@
     font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.01em;
     margin-bottom: 0.5rem;
   }
-  .lede { color: var(--cerneala-slaba); max-width: 62ch; margin-bottom: 2rem; }
+  .lede { color: var(--cerneala-slaba); max-width: 62ch; margin-bottom: 1rem; }
   .lede strong { color: var(--cerneala); }
 
-  /* ---------- diagrama ---------- */
-  .diagrama-cadru {
-    background: white; border: 1px solid var(--linie); border-radius: 10px;
-    padding: clamp(0.75rem, 2vw, 2rem); overflow-x: auto;
+  /* ---------- scenariu ---------- */
+  .scenariu { margin-top: 3rem; }
+  .scenariu-cap { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.35rem; }
+  .scenariu-cap .litera {
+    font-family: "Fraunces", serif; font-style: italic; font-weight: 400;
+    font-size: 2.2rem; color: var(--verde-mediu); line-height: 1;
   }
-  .diagrama-cadru .mermaid { display: flex; justify-content: center; min-width: 640px; }
-  .diagrama-cadru svg { max-width: 100%; height: auto; }
+  .scenariu-cap h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.35rem; }
+  .scenariu > p { color: var(--cerneala-slaba); font-size: 0.92rem; max-width: 60ch; margin-bottom: 1.25rem; }
+
+  /* ---------- scara de proces ---------- */
+  .defilare { overflow-x: auto; }
+  .scara {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(118px, 1fr)) minmax(250px, 1.35fr);
+    column-gap: clamp(0.6rem, 1.5vw, 1.25rem);
+    row-gap: 0;
+    min-width: calc(var(--n) * 128px + 270px);
+    background: white; border: 1px solid var(--linie); border-radius: 10px;
+    padding: clamp(0.9rem, 2vw, 1.75rem);
+  }
+  .cap-col {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--verde);
+    padding-bottom: 0.6rem; border-bottom: 2px solid var(--verde-deschis);
+    align-self: end;
+  }
+  .cap-col.cap-proces { color: var(--cerneala-slaba); border-bottom-color: var(--linie); }
+
+  .ent, .proces { padding: 1.1rem 0 1.6rem; border-bottom: 1px dashed var(--linie); }
+  .rand-final .ent, .rand-final .proces { border-bottom: none; }
+
+  .ent { font-size: 0.8rem; line-height: 1.45; align-self: start; padding-top: 1.3rem; }
+  .ent .schimb {
+    display: inline-block; background: var(--verde-deschis); color: var(--verde-inchis);
+    border-radius: 6px; padding: 0.3rem 0.55rem;
+  }
+  .ent .schimb.atentie { background: var(--chihlimbar-fond); color: oklch(0.42 0.09 80); }
+  .ent .nimic { color: oklch(0.78 0.015 145); }
+
+  .proces { position: relative; }
+  .pas {
+    position: relative; background: var(--hartie);
+    border: 1.5px solid oklch(0.55 0.06 144); border-radius: 8px;
+    padding: 0.8rem 1rem 0.85rem 3rem;
+  }
+  .pas .idx {
+    position: absolute; left: 0.95rem; top: 0.65rem;
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 1.4rem; color: var(--verde-mediu); line-height: 1;
+  }
+  .pas h4 { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
+  .pas p { font-size: 0.8rem; color: var(--cerneala-slaba); margin-top: 0.25rem; }
+  /* săgeata dintre pași */
+  .proces:not(.fara-sageata)::after {
+    content: ''; position: absolute; left: 50%; bottom: -2px;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 8px solid var(--verde);
+  }
+  .proces:not(.fara-sageata)::before {
+    content: ''; position: absolute; left: 50%; bottom: 5px;
+    transform: translateX(-50%);
+    width: 2px; height: calc(1.6rem - 8px); background: var(--verde);
+  }
+  .abatere {
+    margin-top: 0.6rem; font-size: 0.78rem; line-height: 1.45;
+    background: var(--chihlimbar-fond); border-left: 3px solid var(--chihlimbar);
+    border-radius: 0 6px 6px 0; padding: 0.5rem 0.7rem;
+    color: oklch(0.4 0.06 80);
+  }
+  .abatere.blocaj { background: var(--rosu-fond); border-left-color: var(--rosu); color: oklch(0.4 0.1 30); }
+  .abatere strong { color: inherit; }
+
+  .final-banda {
+    grid-column: 1 / -1; margin-top: 0.4rem;
+    background: var(--verde); color: white; border-radius: 8px;
+    padding: 0.85rem 1.2rem; font-weight: 600; font-size: 0.95rem;
+    text-align: center;
+  }
+  .final-banda small { display: block; font-weight: 400; font-size: 0.78rem; opacity: 0.85; margin-top: 0.15rem; }
 
   /* ---------- legenda ---------- */
   .legenda {
@@ -112,12 +185,11 @@
     margin: 1.25rem 0 0; font-size: 0.82rem; color: var(--cerneala-slaba);
   }
   .legenda span { display: inline-flex; align-items: center; gap: 0.45rem; }
-  .pastila { width: 0.95rem; height: 0.95rem; border-radius: 3px; border: 1.5px solid; flex-shrink: 0; }
-  .p-normal   { background: white; border-color: oklch(0.55 0.06 144); }
-  .p-decizie  { background: var(--verde-deschis); border-color: var(--verde); border-radius: 50% 8px; transform: rotate(45deg); width: 0.8rem; height: 0.8rem; border-radius: 2px; }
-  .p-preluare { background: var(--chihlimbar-fond); border-color: var(--chihlimbar); }
-  .p-blocat   { background: var(--rosu-fond); border-color: var(--rosu); }
-  .p-final    { background: var(--verde); border-color: var(--verde-inchis); }
+  .pastila { width: 0.95rem; height: 0.95rem; border-radius: 4px; border: 1.5px solid; flex-shrink: 0; }
+  .p-schimb  { background: var(--verde-deschis); border-color: var(--verde-mediu); }
+  .p-abatere { background: var(--chihlimbar-fond); border-color: var(--chihlimbar); }
+  .p-blocaj  { background: var(--rosu-fond); border-color: var(--rosu); }
+  .p-final   { background: var(--verde); border-color: var(--verde-inchis); }
 
   /* ---------- reguli / tabel ---------- */
   table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 0; font-size: 0.92rem; }
@@ -169,7 +241,7 @@
     section[hidden] { display: block !important; }
     section { break-before: page; padding-top: 1rem; }
     section:first-of-type { break-before: auto; }
-    .diagrama-cadru { border: none; padding: 0; }
+    .scenariu { break-inside: avoid; }
     body { background: white; }
   }
 </style>
@@ -184,9 +256,8 @@
   </div>
   <h1>Fluxul de înscriere, <em>pe ediții</em></h1>
   <div class="antet-jos">
-    <p>Cum intră în platformă o școală, profesorul ei responsabil și elevii — inclusiv
-    reînscrierea la fiecare ediție și cazul în care un alt profesor preia o școală
-    care a mai participat.</p>
+    <p>Fiecare scenariu e o scară de proces, de sus în jos. În stânga fiecărui pas:
+    entitățile implicate și <strong>ce se schimbă la ele</strong> exact în acel moment.</p>
     <div class="meta">
       Ediția de referință: <strong>E</strong> (ex. 2025–2026)<br>
       Sursa: <code>docs/FLUX_INSCRIERE_PROPUS_2026-08-20.md</code>
@@ -203,117 +274,303 @@
 <!-- ============ I. ȘCOALĂ + PROFESOR ============ -->
 <section id="s-scoala" role="tabpanel">
   <h2>Înscrierea școlii și a profesorului</h2>
-  <p class="lede">Școala nu se înscrie singură — un <strong>profesor responsabil</strong> depune o
-  cerere, iar echipa proiectului o aprobă. La fiecare ediție nouă, profesorii din edițiile
-  trecute doar <strong>confirmă</strong> participarea; cererile de <strong>preluare</strong>
-  (alt profesor pentru aceeași școală) ajung tot la echipă, marcate distinct.</p>
-
-  <div class="diagrama-cadru">
-  <pre class="mermaid">
-flowchart TD
-    subgraph PROF["&nbsp;PROFESORUL&nbsp;"]
-        A1{"Are cont din<br/>ediția anterioară?"}
-        A1 -- "Nu — profesor nou" --> A2["Își creează cont<br/>(email + parolă)"]
-        A2 --> A3["Formular de înscriere:<br/>alege școala din catalogul SIIIR,<br/>date despre școală, consimțăminte"]
-        A1 -- "Da" --> B1{"La autentificare:<br/>«Continuați în ediția E?»"}
-        B1 -- "NU" --> B2["Școala se dezleagă de profesor —<br/>devine liberă pentru preluare"]
-        B2 --> B3(["Stop — se poate răzgândi<br/>cât timp școala e liberă"])
-        B1 -- "DA" --> B4["Cerere nouă, pre-completată<br/>cu datele de anul trecut<br/>(istoricul edițiilor se păstrează)"]
-        B4 --> P0
-        A3 --> C1{"Școala aleasă are deja<br/>un profesor responsabil?"}
-        C1 -- "Nu" --> P0["Cerere ÎN AȘTEPTARE<br/>în coada echipei"]
-        C1 -- "Da — deja aprobată<br/>în ediția E" --> C2["🚫 Blocat: școala e deja înscrisă<br/>anul acesta cu profesorul A —<br/>contactați echipa proiectului"]
-        C1 -- "Da — din ediții anterioare<br/>sau cerere în așteptare" --> C3["Vede numele profesorului A<br/>și e invitat să-l contacteze direct"]
-        C3 --> C4["Poate depune totuși cererea →<br/>marcată PRELUARE"]
-        C4 --> P0
-    end
-    subgraph ADMIN["&nbsp;ECHIPA PROIECTULUI (admin)&nbsp;"]
-        P0 --> D1{"Tip cerere"}
-        D1 -- "normală" --> D2{"Decizie"}
-        D1 -- "PRELUARE" --> D3["Vede: profesorul actual A,<br/>dacă A a fost activ în ediția E,<br/>zile de la depunere<br/>(termen orientativ: 3 zile, configurabil)"]
-        D3 --> D4{"Decizie de preluare"}
-        D4 -- "aprobă" --> D5["Pasul 1: dezalocă profesorul A<br/>Pasul 2: aprobă cererea normal"]
-        D4 -- "respinge" --> D6["Respinge, cu motiv"]
-        D2 -- "respinge" --> D6
-        D2 -- "aprobă" --> D7
-        D5 --> D7["Școala legată de ediția E ·<br/>cod SE generat dacă e școală nouă ·<br/>profesor activat + cod de profesor ·<br/>alte cereri în așteptare pe aceeași școală<br/>→ respinse automat, cu motiv"]
-        D6 --> D8["Profesorul vede motivul,<br/>poate corecta și retrimite"]
-        D8 --> P0
-    end
-    D7 --> E0(["Școala e activă în ediția E —<br/>elevii se pot înscrie cu codul profesorului"])
-
-    classDef implicit fill:#ffffff,stroke:#7a9b6e,color:#2e3a2b;
-    classDef decizie fill:#dae7d6,stroke:#036600,color:#1e3d1a;
-    classDef preluare fill:#f7eed4,stroke:#a07d1c,color:#4a3a0d;
-    classDef blocat fill:#f8e5e0,stroke:#b3402f,color:#5c1f13;
-    classDef final fill:#036600,stroke:#023d00,color:#ffffff;
-    classDef stop fill:#eef2ea,stroke:#9aa895,color:#4a5245;
-    class A2,A3,B2,B4,P0,D5,D6,D7,D8 implicit;
-    class A1,B1,C1,D1,D2,D4 decizie;
-    class C3,C4,D3 preluare;
-    class C2 blocat;
-    class E0 final;
-    class B3 stop;
-    style PROF fill:#fbfdf8,stroke:#c9dcc0,color:#036600;
-    style ADMIN fill:#f4f8f0,stroke:#a2cc99,color:#036600;
-  </pre>
-  </div>
+  <p class="lede">Trei scenarii, fiecare cap-coadă: <strong>profesorul nou</strong> cu o școală
+  liberă, <strong>profesorul care revine</strong> dintr-o ediție trecută, și
+  <strong>preluarea</strong> — un alt profesor pentru o școală care a mai participat.
+  Abaterile (respingere, blocaj) apar ca note sub pasul unde se pot întâmpla.</p>
 
   <div class="legenda">
-    <span><i class="pastila p-normal"></i> pas / acțiune</span>
-    <span><i class="pastila p-decizie"></i> decizie</span>
-    <span><i class="pastila p-preluare"></i> caz de preluare</span>
-    <span><i class="pastila p-blocat"></i> blocaj</span>
+    <span><i class="pastila p-schimb"></i> schimbare de stare</span>
+    <span><i class="pastila p-abatere"></i> abatere / caz special</span>
+    <span><i class="pastila p-blocaj"></i> blocaj</span>
     <span><i class="pastila p-final"></i> rezultat final</span>
+  </div>
+
+  <!-- ===== Scenariul A ===== -->
+  <div class="scenariu">
+    <div class="scenariu-cap"><span class="litera">A</span><h3>Profesor nou, școală liberă</h3></div>
+    <p>Drumul obișnuit: un profesor care nu a mai participat înscrie o școală fără profesor responsabil.</p>
+    <div class="defilare">
+    <div class="scara" style="--n: 4">
+      <div class="cap-col">Profesor</div>
+      <div class="cap-col">Școală</div>
+      <div class="cap-col">Cerere</div>
+      <div class="cap-col">Echipa proiectului</div>
+      <div class="cap-col cap-proces">Proces</div>
+
+      <div class="ent"><span class="schimb">cont creat, încă inactiv</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">1</span><h4>Își creează cont</h4>
+        <p>Email + parolă.</p></div>
+      </div>
+
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">aleasă din catalogul oficial SIIIR (încă nelegată)</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">2</span><h4>Completează formularul de înscriere</h4>
+        <p>Școala din catalog, datele școlii, consimțămintele.</p>
+        <div class="abatere"><strong>Școala are deja profesor responsabil?</strong> → vezi scenariul C (Preluare).</div>
+        </div>
+      </div>
+
+      <div class="ent"><span class="schimb">în așteptare, acces limitat în platformă</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">creată · ÎN AȘTEPTARE</span></div>
+      <div class="ent"><span class="schimb">o vede în coada de aprobare</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">3</span><h4>Trimite cererea</h4>
+        <p>O cerere per profesor, per ediție.</p></div>
+      </div>
+
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">se decide soarta ei</span></div>
+      <div class="ent"><span class="schimb">aprobă sau respinge</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">4</span><h4>Echipa decide</h4>
+        <p>Verifică datele școlii și ale profesorului.</p>
+        <div class="abatere"><strong>Respinge, cu motiv</strong> → cererea devine RESPINSĂ; profesorul vede motivul, corectează și retrimite (înapoi la pasul 3).</div>
+        </div>
+      </div>
+
+      <div class="ent rand-final"><span class="schimb">activat · primește codul de profesor</span></div>
+      <div class="ent rand-final"><span class="schimb">creată în platformă · cod SE · legată de ediția E</span></div>
+      <div class="ent rand-final"><span class="schimb">APROBATĂ</span></div>
+      <div class="ent rand-final"><span class="schimb">alte cereri pe aceeași școală: respinse automat, cu motiv</span></div>
+      <div class="proces rand-final fara-sageata">
+        <div class="pas"><span class="idx">5</span><h4>Aprobare</h4>
+        <p>Toate efectele se produc împreună, la același pas.</p></div>
+      </div>
+
+      <div class="final-banda">Școala e activă în ediția E
+        <small>elevii se pot înscrie cu codul profesorului</small></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ===== Scenariul B ===== -->
+  <div class="scenariu">
+    <div class="scenariu-cap"><span class="litera">B</span><h3>Profesor care revine (ediție nouă)</h3></div>
+    <p>Școala a participat în ediția trecută cu același profesor — acesta doar confirmă și ajunge direct la aprobare.</p>
+    <div class="defilare">
+    <div class="scara" style="--n: 4">
+      <div class="cap-col">Profesor</div>
+      <div class="cap-col">Școală</div>
+      <div class="cap-col">Cerere</div>
+      <div class="cap-col">Echipa proiectului</div>
+      <div class="cap-col cap-proces">Proces</div>
+
+      <div class="ent"><span class="schimb">vede ecranul «Continuați în ediția E?»</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">1</span><h4>Se autentifică cu contul existent</h4>
+        <p>Platforma îl recunoaște ca participant al ediției trecute.</p></div>
+      </div>
+
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">cerere NOUĂ, pre-completată cu datele de anul trecut · ÎN AȘTEPTARE</span></div>
+      <div class="ent"><span class="schimb">o vede în coadă</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">2</span><h4>Confirmă participarea</h4>
+        <p>Un pas scurt: da + re-acceptarea regulamentului. Istoricul edițiilor trecute rămâne intact.</p>
+        <div class="abatere"><strong>Refuză participarea</strong> → școala se dezleagă de profesor și devine liberă pentru preluare; profesorul rămâne cu cont, fără școală. Stop.</div>
+        </div>
+      </div>
+
+      <div class="ent rand-final"><span class="schimb">rămâne activ, același cod de profesor</span></div>
+      <div class="ent rand-final"><span class="schimb">legată și de ediția E</span></div>
+      <div class="ent rand-final"><span class="schimb">APROBATĂ</span></div>
+      <div class="ent rand-final"><span class="schimb">aprobă (sau respinge, cu motiv)</span></div>
+      <div class="proces rand-final fara-sageata">
+        <div class="pas"><span class="idx">3</span><h4>Echipa aprobă</h4>
+        <p>Aceeași decizie umană ca la scenariul A, doar că datele sunt deja cunoscute.</p></div>
+      </div>
+
+      <div class="final-banda">Școala e activă și în ediția E
+        <small>elevii se pot înscrie / reînscrie cu codul profesorului</small></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ===== Scenariul C ===== -->
+  <div class="scenariu">
+    <div class="scenariu-cap"><span class="litera">C</span><h3>Preluare — alt profesor, aceeași școală</h3></div>
+    <p>Profesorul B vrea o școală care a participat cu profesorul A. A nu a confirmat (încă) pentru ediția curentă.</p>
+    <div class="defilare">
+    <div class="scara" style="--n: 5">
+      <div class="cap-col">Profesor B</div>
+      <div class="cap-col">Profesor A</div>
+      <div class="cap-col">Școală</div>
+      <div class="cap-col">Cerere</div>
+      <div class="cap-col">Echipa proiectului</div>
+      <div class="cap-col cap-proces">Proces</div>
+
+      <div class="ent"><span class="schimb">cont creat · alege școala în formular</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb atentie">figurează cu profesorul A, din ediții anterioare</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">1</span><h4>B își face cont și alege școala</h4>
+        <p>Ca la scenariul A, pașii 1–2.</p></div>
+      </div>
+
+      <div class="ent"><span class="schimb atentie">vede NUMELE lui A (fără email) și e invitat să-l contacteze direct</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">2</span><h4>Platforma îl avertizează pe B</h4>
+        <p>Sunt colegi — cel mai scurt drum e o discuție directă.</p>
+        <div class="abatere blocaj"><strong>Școala e deja APROBATĂ în ediția E cu A?</strong> → B e blocat; e îndrumat către echipa proiectului. Scenariul se oprește aici.</div>
+        </div>
+      </div>
+
+      <div class="ent"><span class="schimb">în așteptare</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb atentie">creată · ÎN AȘTEPTARE · marcaj PRELUARE</span></div>
+      <div class="ent"><span class="schimb">vede marcajul + profesorul actual A + activitatea lui în ediția E + zilele de la depunere</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">3</span><h4>B depune totuși cererea</h4>
+        <p>Termenul orientativ afișat echipei: 3 zile (configurabil). Nu declanșează nimic automat.</p></div>
+      </div>
+
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb atentie">poate depune și el confirmarea, între timp</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">dacă există două, apar una lângă alta</span></div>
+      <div class="ent"><span class="schimb">arbitrează: verifică situația, eventual sună școala</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">4</span><h4>Echipa arbitrează</h4>
+        <p>Decizia finală e mereu la om — fără notificări pe email ca mecanism critic.</p>
+        <div class="abatere"><strong>Respinge preluarea</strong> → B vede motivul; A rămâne profesorul școlii (dacă a confirmat).</div>
+        </div>
+      </div>
+
+      <div class="ent rand-final"><span class="schimb">activat · primește codul de profesor</span></div>
+      <div class="ent rand-final"><span class="schimb atentie">dezalocat de la școală · rămâne cu cont, fără școală</span></div>
+      <div class="ent rand-final"><span class="schimb">legată de B și de ediția E</span></div>
+      <div class="ent rand-final"><span class="schimb">APROBATĂ · celelalte: respinse automat, cu motiv</span></div>
+      <div class="ent rand-final"><span class="schimb">execută cei doi pași dintr-o singură acțiune</span></div>
+      <div class="proces rand-final fara-sageata">
+        <div class="pas"><span class="idx">5</span><h4>Aprobarea preluării — doi pași</h4>
+        <p>Pasul 1: dezalocă profesorul A. Pasul 2: aprobă cererea lui B pe fluxul normal.</p></div>
+      </div>
+
+      <div class="final-banda">Școala e activă în ediția E, cu profesorul B
+        <small>istoricul rămâne: în edițiile trecute figurează profesorul A</small></div>
+    </div>
+    </div>
   </div>
 </section>
 
 <!-- ============ II. ELEVI ============ -->
 <section id="s-elevi" role="tabpanel">
   <h2>Înscrierea și reînscrierea elevilor</h2>
-  <p class="lede">Elevul nou primește <strong>codul profesorului</strong> și își face cont.
-  Elevul care a mai participat se <strong>reînscrie în doi pași</strong>: își alege clasa nouă
-  și reînnoiește acordul parental — restul (cont, școală) se preia automat. Ambele cerințe vin
-  din realitate: clasa se schimbă în fiecare an, iar acordul părinților trebuie reînnoit anual.</p>
-
-  <div class="diagrama-cadru">
-  <pre class="mermaid">
-flowchart TD
-    S0(["Elevul"]) --> S1{"A avut cont<br/>în ediția trecută?"}
-    S1 -- "Nu" --> S2["Primește codul de profesor<br/>de la profesorul responsabil"]
-    S2 --> S3["Își creează cont: clasă, nickname,<br/>email, parolă, codul profesorului"]
-    S3 --> S4{"Cod valid ȘI școala aprobată<br/>în ediția curentă?"}
-    S4 -- "Nu" --> S5["Mesaj clar: «școala nu e încă<br/>înscrisă în ediția curentă —<br/>întreabă profesorul tău»"]
-    S5 --> S2
-    S4 -- "Da" --> S6["Alocat la școală,<br/>în ediția E"]
-    S1 -- "Da" --> R1["Se autentifică<br/>cu contul vechi"]
-    R1 --> R2{"«Continui în ediția E?»"}
-    R2 -- "Da" --> R3{"Școala lui e aprobată<br/>în ediția E?"}
-    R3 -- "Da" --> R4["Își alege clasa nouă →<br/>cont pe ediția E, aceleași<br/>credențiale, aceeași școală"]
-    R3 -- "Nu / școala a fost preluată<br/>de alt profesor" --> S2
-    R2 -- "Nu" --> R5(["Stop"])
-    R4 --> S7
-    S6 --> S7["Acord parental: consimțăminte<br/>+ semnătură — reînnoit obligatoriu<br/>la fiecare ediție"]
-    S7 --> S8(["Cont activ în ediția E"])
-
-    classDef implicit fill:#ffffff,stroke:#7a9b6e,color:#2e3a2b;
-    classDef decizie fill:#dae7d6,stroke:#036600,color:#1e3d1a;
-    classDef atentie fill:#f7eed4,stroke:#a07d1c,color:#4a3a0d;
-    classDef final fill:#036600,stroke:#023d00,color:#ffffff;
-    classDef stop fill:#eef2ea,stroke:#9aa895,color:#4a5245;
-    class S2,S3,S6,R1,R4,S7 implicit;
-    class S1,S4,R2,R3 decizie;
-    class S5 atentie;
-    class S8 final;
-    class S0,R5 stop;
-  </pre>
-  </div>
+  <p class="lede">Elevul nou intră cu <strong>codul profesorului</strong>. Elevul care a mai
+  participat se reînscrie în <strong>doi pași de input</strong> — clasa nouă și acordul parental
+  reînnoit — restul se preia automat.</p>
 
   <div class="legenda">
-    <span><i class="pastila p-normal"></i> pas / acțiune</span>
-    <span><i class="pastila p-decizie"></i> decizie</span>
-    <span><i class="pastila p-preluare"></i> atenționare</span>
+    <span><i class="pastila p-schimb"></i> schimbare de stare</span>
+    <span><i class="pastila p-abatere"></i> abatere / caz special</span>
     <span><i class="pastila p-final"></i> rezultat final</span>
+  </div>
+
+  <!-- ===== Scenariul D ===== -->
+  <div class="scenariu">
+    <div class="scenariu-cap"><span class="litera">D</span><h3>Elev nou</h3></div>
+    <p>Prima participare: cod de la profesor, cont, acord parental.</p>
+    <div class="defilare">
+    <div class="scara" style="--n: 3">
+      <div class="cap-col">Elev</div>
+      <div class="cap-col">Cont</div>
+      <div class="cap-col">Acord parental</div>
+      <div class="cap-col cap-proces">Proces</div>
+
+      <div class="ent"><span class="schimb">are codul de profesor</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">1</span><h4>Primește codul de la profesorul responsabil</h4>
+        <p>Codul circulă în clasă, de la profesor la elevi.</p></div>
+      </div>
+
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="ent"><span class="schimb">creat, inactiv · legat de școală și de ediția E</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">2</span><h4>Își creează cont</h4>
+        <p>Clasă, nickname, email, parolă, codul profesorului. Codul e acceptat doar dacă școala e aprobată în ediția curentă.</p>
+        <div class="abatere"><strong>Școala nu e (încă) aprobată în ediția E?</strong> → mesaj clar: «școala nu e încă înscrisă în ediția curentă — întreabă profesorul tău». Reia pasul când școala e aprobată.</div>
+        </div>
+      </div>
+
+      <div class="ent rand-final"><span class="nimic">—</span></div>
+      <div class="ent rand-final"><span class="schimb">ACTIVAT</span></div>
+      <div class="ent rand-final"><span class="schimb">consimțăminte bifate + semnătură desenată</span></div>
+      <div class="proces rand-final fara-sageata">
+        <div class="pas"><span class="idx">3</span><h4>Acordul parental</h4>
+        <p>Fără el, contul rămâne inactiv.</p></div>
+      </div>
+
+      <div class="final-banda">Cont activ în ediția E</div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ===== Scenariul E ===== -->
+  <div class="scenariu">
+    <div class="scenariu-cap"><span class="litera">E</span><h3>Elev care revine (ediție nouă)</h3></div>
+    <p>A participat anul trecut. Clasa s-a schimbat, acordul parental trebuie reînnoit — restul se preia.</p>
+    <div class="defilare">
+    <div class="scara" style="--n: 3">
+      <div class="cap-col">Elev</div>
+      <div class="cap-col">Cont</div>
+      <div class="cap-col">Acord parental</div>
+      <div class="cap-col cap-proces">Proces</div>
+
+      <div class="ent"><span class="schimb">recunoscut ca participant al ediției trecute</span></div>
+      <div class="ent"><span class="schimb">contul vechi rămâne pe ediția lui</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">1</span><h4>Se autentifică cu contul din ediția trecută</h4>
+        <p>Aceleași email + parolă.</p>
+        <div class="abatere"><strong>Nu vrea să continue?</strong> → stop, nimic nu se schimbă.</div>
+        </div>
+      </div>
+
+      <div class="ent"><span class="schimb">confirmă «Continui în ediția E?» și își alege CLASA NOUĂ</span></div>
+      <div class="ent"><span class="schimb">cont NOU pe ediția E · aceleași credențiale · aceeași școală</span></div>
+      <div class="ent"><span class="nimic">—</span></div>
+      <div class="proces">
+        <div class="pas"><span class="idx">2</span><h4>Confirmă și își actualizează clasa</h4>
+        <p>Singurul input nou în afara acordului.</p>
+        <div class="abatere"><strong>Școala nu mai e în ediția E / a fost preluată?</strong> → i se cere un cod de profesor nou (continuă ca la scenariul D, pasul 1).</div>
+        </div>
+      </div>
+
+      <div class="ent rand-final"><span class="nimic">—</span></div>
+      <div class="ent rand-final"><span class="schimb">ACTIVAT</span></div>
+      <div class="ent rand-final"><span class="schimb">REÎNNOIT — obligatoriu la fiecare ediție</span></div>
+      <div class="proces rand-final fara-sageata">
+        <div class="pas"><span class="idx">3</span><h4>Acordul parental, din nou</h4>
+        <p>Cerință confirmată: acordul nu se preia de la o ediție la alta.</p></div>
+      </div>
+
+      <div class="final-banda">Cont activ în ediția E — reînscriere în doi pași</div>
+    </div>
+    </div>
   </div>
 </section>
 
@@ -415,25 +672,7 @@ flowchart TD
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script>
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: 'base',
-    flowchart: { curve: 'basis', htmlLabels: true, padding: 10 },
-    themeVariables: {
-      fontFamily: '"Work Sans", sans-serif',
-      fontSize: '14.5px',
-      primaryColor: '#ffffff',
-      primaryBorderColor: '#7a9b6e',
-      primaryTextColor: '#2e3a2b',
-      lineColor: '#6b7d63',
-      edgeLabelBackground: '#f3f7ef',
-      clusterBkg: '#fbfdf8',
-      clusterBorder: '#c9dcc0'
-    }
-  });
-
   const taburi = document.querySelectorAll('nav [role="tab"]');
   const panouri = document.querySelectorAll('[role="tabpanel"]');
   const activeaza = (tab) => {
@@ -442,14 +681,9 @@ flowchart TD
     history.replaceState(null, '', '#' + tab.dataset.tinta);
   };
   taburi.forEach(tab => tab.addEventListener('click', () => activeaza(tab)));
-
-  // Mermaid nu poate măsura text în elemente ascunse — randăm totul cu
-  // secțiunile vizibile, abia apoi activăm tab-ul cerut.
-  mermaid.run().then(() => {
-    const initial = location.hash.slice(1);
-    const tab = document.querySelector(`nav [data-tinta="${CSS.escape(initial)}"]`) || taburi[0];
-    activeaza(tab);
-  });
+  const initial = location.hash.slice(1);
+  const tabInitial = document.querySelector(`nav [data-tinta="${CSS.escape(initial)}"]`) || taburi[0];
+  activeaza(tabInitial);
 </script>
 </body>
 </html>
